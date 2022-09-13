@@ -27,7 +27,7 @@ fevereiro.adicionarLancameto(new Lancamento("Farmácia", "despesa", 100));
 fevereiro.calcularSaldo();
 console.log(fevereiro);
 
-const marco = new Mes("marco", janeiro.totalizador.saldo);
+const marco = new Mes("marco", fevereiro.totalizador.saldo);
 marco.adicionarLancameto(new Lancamento("Salário", "receita", 3000));
 marco.adicionarLancameto(new Lancamento("Hora Extra", "receita", 500));
 marco.adicionarLancameto(new Lancamento("Aluguel", "despesa", 600));
