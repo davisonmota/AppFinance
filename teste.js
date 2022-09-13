@@ -36,7 +36,7 @@ console.log(
   `Juros deve ser -99: ${fevereiro.totalizador.juros}, ${
     fevereiro.totalizador.juros === -99
   }\n`,
-  `Saldo deve ser 1089: ${fevereiro.totalizador.saldo}, ${
+  `Saldo deve ser -1089: ${fevereiro.totalizador.saldo}, ${
     fevereiro.totalizador.saldo === -1089
   }\n`
 );
