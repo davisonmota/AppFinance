@@ -64,8 +64,8 @@ function renderizar() {
       const detalhesLancamento = `${lancamento.tipo} - ${lancamento.categoria}: ${lancamento.valor}`;
       addElement(painel, "p", detalhesLancamento);
     }
-    const detalhesSaldo = `Saldo: ${mes.totalizador.saldo}`;
-    addElement(painel, "p", detalhesSaldo);
+    const detalhesDoSaldo = `Saldo: ${mes.totalizador.saldo}`;
+    addElement(painel, "p", detalhesDoSaldo);
     addElement(painel, "hr");
   }
   app.appendChild(painel);
