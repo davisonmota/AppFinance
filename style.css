@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Verdana, sans-serif;
+}
+#formLancamento {
+  padding: 10px;
+  position: fixed;
+  right: 20px;
+  width: 200px;
+  border: 1px solid black;
+}
+input {
+  width: 100%;
+  height: 30px;
+  padding: 3px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  border: solid 1px #ccc;
+  border-radius: 3px;
+  text-indent: 5px;
+}
+select {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  border: solid 1px #ccc;
+  border-radius: 3px;
+}
+button {
+  margin-top: 20px;
+  width: 100%;
+  height: 35px;
+  color: #ffffff;
+  background-color: #000000;
+  border: none;
+  border-radius: 3px;
+}

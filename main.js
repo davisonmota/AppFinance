@@ -84,8 +84,8 @@ function adicionarLancamento() {
   );
   ano.calcularSaldo();
   renderizar();
-  mes.value = "";
-  tipo.value = "";
+  mes.value = ano.meses[0].nome;
+  tipo.value = "receita";
   categoria.value = "";
   valor.value = "";
 }
@@ -94,3 +94,10 @@ const botaoAdicionarLancamento = document.getElementById(
   "botaoAdicionarLancamento"
 );
 botaoAdicionarLancamento.addEventListener("click", adicionarLancamento);
+
+const mesSelect = document.getElementById("mes");
+for (const mes of ano.meses) {
+  const option = document.createElement("option");
+  option.text = mes.nome;
+  mesSelect.add(option);
+}

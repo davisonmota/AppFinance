@@ -5,18 +5,24 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <link rel="stylesheet" href="style.css">
   <!-- <script src="./teste.js"></script> -->
   <title>App Finance</title>
 </head>
 
 <body>
   <h1>Finanças Pessoas</h1>
-  <input type="text" id="mes" placeholder="Mês" />
-  <input type="text" id="tipo" placeholder="Tipo" />
-  <input type="text" id="categoria" placeholder="Categoria" />
-  <input type="number" id="valor" placeholder="Valor" min="0" />
-  <button id="botaoAdicionarLancamento">Adicionar Lançamento</button>
+  <div id="formLancamento">
+    <select id="mes">
+    </select>
+    <select id="tipo">
+      <option value="receita">Receita</option>
+      <option value="despesa">Despesa</option>
+    </select>
+    <input type="text" id="categoria" placeholder="Categoria" />
+    <input type="number" id="valor" placeholder="Valor" min="0" />
+    <button id="botaoAdicionarLancamento">Adicionar Lançamento</button>
+  </div>
   <div id="app"></div>
 
   <script src="./util.js"></script>
