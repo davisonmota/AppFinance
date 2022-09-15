@@ -46,7 +46,7 @@ console.log(ano.meses);
 
 function addElement(parent, elementType, text) {
   const element = document.createElement(elementType);
-  if (text) {
+  if (text !== "" && text !== undefined && text !== null && text !== NaN) {
     element.innerText = text;
   }
   parent.appendChild(element);
@@ -60,13 +60,36 @@ function renderizar() {
   const painel = document.createElement("div");
   for (const mes of ano.meses) {
     addElement(painel, "h2", mes.nome);
+    const tabelaLancamento = document.createElement("table");
+    tabelaLancamento.className = "tabela-lancamentos";
+
+    const linhaTitulo = document.createElement("tr");
+    addElement(linhaTitulo, "th", "Categoria");
+    addElement(linhaTitulo, "th", "Valor");
+    tabelaLancamento.appendChild(linhaTitulo)
+
     for (const lancamento of mes.lancamentos) {
-      const detalhesLancamento = `${lancamento.tipo} - ${lancamento.categoria}: ${lancamento.valor}`;
-      addElement(painel, "p", detalhesLancamento);
+      const linhaLancamento = document.createElement("tr");
+      addElement(linhaLancamento, "td", lancamento.categoria);
+      addElement(linhaLancamento, "td", formatarDinheiro(lancamento.valor));
+      tabelaLancamento.appendChild(linhaLancamento);
     }
-    const detalhesDoSaldo = `Saldo: ${mes.totalizador.saldo}`;
-    addElement(painel, "p", detalhesDoSaldo);
-    addElement(painel, "hr");
+    const linhaJuros = document.createElement("tr");
+    addElement(linhaJuros, "th", "Juros");
+    addElement(linhaJuros, "th", formatarDinheiro(mes.totalizador.juros));
+    tabelaLancamento.appendChild(linhaJuros);
+
+    const linhaRendimentos = document.createElement("tr");
+    addElement(linhaRendimentos, "th", "Rendimentos");
+    addElement(linhaRendimentos, "th", formatarDinheiro(mes.totalizador.rendimentos));
+    tabelaLancamento.appendChild(linhaRendimentos);
+
+    const linhaSaldo = document.createElement("tr");
+    addElement(linhaSaldo, "th", "Total");
+    addElement(linhaSaldo, "th", formatarDinheiro(mes.totalizador.saldo));
+    tabelaLancamento.appendChild(linhaSaldo);
+
+    painel.appendChild(tabelaLancamento);
   }
   app.appendChild(painel);
 }

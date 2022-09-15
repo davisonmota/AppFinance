@@ -1,11 +1,11 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
-}
+} */
 body {
   font-family: Verdana, sans-serif;
 }
-#formLancamento {
+#form-lancamento {
   padding: 10px;
   position: fixed;
   right: 20px;
@@ -35,7 +35,30 @@ button {
   width: 100%;
   height: 35px;
   color: #ffffff;
-  background-color: #000000;
+  background-color: #000;
   border: none;
   border-radius: 3px;
+}
+.tabela-lancamentos {
+  text-indent: 10px;
+  width: 500px;
+  background-color: #eee;
+  border-collapse: collapse;
+}
+.tabela-lancamentos td,
+.tabela-lancamentos th {
+  padding: 10px;
+}
+.tabela-lancamentos tr:nth-child(even) {
+  background-color: #fff;
+}
+.tabela-lancamentos th {
+  text-align: left;
+  background-color: #ccc;
+  width: 50%;
+}
+.grafico {
+  width: 500px;
+  height: 200px;
+  border: solid #000 1px;
 }
