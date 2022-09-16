@@ -47,7 +47,7 @@ button {
 }
 .tabela-lancamentos td,
 .tabela-lancamentos th {
-  padding: 10px;
+  padding: 8px;
 }
 .tabela-lancamentos tr:nth-child(even) {
   background-color: #fff;

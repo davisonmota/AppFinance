@@ -2,37 +2,17 @@ const janeiro = new Mes("Janeiro");
 janeiro.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
 janeiro.adicionarLancamento(new Lancamento("Aluguel", "despesa", 2000));
 janeiro.adicionarLancamento(new Lancamento("Conta de Luz", "despesa", 200));
-janeiro.adicionarLancamento(new Lancamento("Internet", "despesa", 100));
-janeiro.adicionarLancamento(new Lancamento("Academia", "despesa", 100));
-janeiro.adicionarLancamento(new Lancamento("Transporte", "despesa", 100));
-janeiro.adicionarLancamento(new Lancamento("Lazer", "despesa", 300));
-janeiro.adicionarLancamento(new Lancamento("Alimentação", "despesa", 900));
-janeiro.adicionarLancamento(new Lancamento("Farmácia", "despesa", 100));
 
 const fevereiro = new Mes("Fevereiro");
 fevereiro.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
 fevereiro.adicionarLancamento(new Lancamento("Aluguel", "despesa", 1200));
 fevereiro.adicionarLancamento(new Lancamento("Conta de Luz", "despesa", 100));
 fevereiro.adicionarLancamento(new Lancamento("Conta de Água", "despesa", 100));
-fevereiro.adicionarLancamento(new Lancamento("Internet", "despesa", 100));
-fevereiro.adicionarLancamento(new Lancamento("Academia", "despesa", 100));
-fevereiro.adicionarLancamento(new Lancamento("Transporte", "despesa", 100));
-fevereiro.adicionarLancamento(new Lancamento("Lazer", "despesa", 300));
-fevereiro.adicionarLancamento(new Lancamento("Alimentação", "despesa", 900));
-fevereiro.adicionarLancamento(new Lancamento("Farmácia", "despesa", 100));
 
 const marco = new Mes("Marco");
 marco.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
 marco.adicionarLancamento(new Lancamento("Hora Extra", "receita", 500));
 marco.adicionarLancamento(new Lancamento("Aluguel", "despesa", 600));
-marco.adicionarLancamento(new Lancamento("Conta de Luz", "despesa", 100));
-marco.adicionarLancamento(new Lancamento("Conta de Água", "despesa", 100));
-marco.adicionarLancamento(new Lancamento("Internet", "despesa", 100));
-marco.adicionarLancamento(new Lancamento("Academia", "despesa", 100));
-marco.adicionarLancamento(new Lancamento("Transporte", "despesa", 100));
-marco.adicionarLancamento(new Lancamento("Lazer", "despesa", 300));
-marco.adicionarLancamento(new Lancamento("Alimentação", "despesa", 900));
-marco.adicionarLancamento(new Lancamento("Farmácia", "despesa", 100));
 
 const ano = new Ano();
 ano.adicionarMes(janeiro);
@@ -52,6 +32,23 @@ function addElement(parent, elementType, text) {
   parent.appendChild(element);
 }
 
+class Tabela {
+  constructor(className) {
+    this.elemento = document.createElement("table");
+    this.elemento.className = className;
+  }
+
+  adicionarLinha(tipo, valores) {
+    const tr = document.createElement("tr");
+    for (const valor of valores) {
+      const coluna = document.createElement(tipo);
+      coluna.innerText = valor;
+      tr.appendChild(coluna);
+    }
+    this.elemento.appendChild(tr);
+  }
+}
+
 function renderizar() {
   const app = document.getElementById("app");
   if (app.firstChild) {
@@ -60,36 +57,35 @@ function renderizar() {
   const painel = document.createElement("div");
   for (const mes of ano.meses) {
     addElement(painel, "h2", mes.nome);
-    const tabelaLancamento = document.createElement("table");
-    tabelaLancamento.className = "tabela-lancamentos";
-
-    const linhaTitulo = document.createElement("tr");
-    addElement(linhaTitulo, "th", "Categoria");
-    addElement(linhaTitulo, "th", "Valor");
-    tabelaLancamento.appendChild(linhaTitulo)
-
+    const tabelaLancamento = new Tabela("tabela-lancamentos");
+    tabelaLancamento.adicionarLinha("th", ["Categoria", "Valor"]);
     for (const lancamento of mes.lancamentos) {
-      const linhaLancamento = document.createElement("tr");
-      addElement(linhaLancamento, "td", lancamento.categoria);
-      addElement(linhaLancamento, "td", formatarDinheiro(lancamento.valor));
-      tabelaLancamento.appendChild(linhaLancamento);
+      tabelaLancamento.adicionarLinha("td", [
+        lancamento.categoria,
+        formatarDinheiro(lancamento.getValorString()),
+      ]);
     }
-    const linhaJuros = document.createElement("tr");
-    addElement(linhaJuros, "th", "Juros");
-    addElement(linhaJuros, "th", formatarDinheiro(mes.totalizador.juros));
-    tabelaLancamento.appendChild(linhaJuros);
-
-    const linhaRendimentos = document.createElement("tr");
-    addElement(linhaRendimentos, "th", "Rendimentos");
-    addElement(linhaRendimentos, "th", formatarDinheiro(mes.totalizador.rendimentos));
-    tabelaLancamento.appendChild(linhaRendimentos);
-
-    const linhaSaldo = document.createElement("tr");
-    addElement(linhaSaldo, "th", "Total");
-    addElement(linhaSaldo, "th", formatarDinheiro(mes.totalizador.saldo));
-    tabelaLancamento.appendChild(linhaSaldo);
-
-    painel.appendChild(tabelaLancamento);
+    tabelaLancamento.adicionarLinha("th", [
+      "Receitas",
+      formatarDinheiro(mes.totalizador.receitas),
+    ]);
+    tabelaLancamento.adicionarLinha("th", [
+      "Despesas",
+      formatarDinheiro(mes.totalizador.despesas),
+    ]);
+    tabelaLancamento.adicionarLinha("th", [
+      "Juros",
+      formatarDinheiro(mes.totalizador.juros),
+    ]);
+    tabelaLancamento.adicionarLinha("th", [
+      "Rendimentos",
+      formatarDinheiro(mes.totalizador.rendimentos),
+    ]);
+    tabelaLancamento.adicionarLinha("th", [
+      "Total",
+      formatarDinheiro(mes.totalizador.saldo),
+    ]);
+    painel.appendChild(tabelaLancamento.elemento);
   }
   app.appendChild(painel);
 }

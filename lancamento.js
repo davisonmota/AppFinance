@@ -15,4 +15,8 @@ class Lancamento {
     this.tipo = tipo;
     this.valor = valor;
   }
+
+  getValorString() {
+    return this.tipo === "despesa" ? this.valor * -1 : this.valor;
+  }
 }
