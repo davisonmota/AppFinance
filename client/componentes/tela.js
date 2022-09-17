@@ -1,31 +1,26 @@
 class Tela {
   constructor() {
-    const janeiro = new Mes("Janeiro");
-    janeiro.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
-    janeiro.adicionarLancamento(new Lancamento("Aluguel", "despesa", 2000));
-    janeiro.adicionarLancamento(new Lancamento("Conta de Luz", "despesa", 200));
+    this.init();
+  }
 
-    const fevereiro = new Mes("Fevereiro");
-    fevereiro.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
-    fevereiro.adicionarLancamento(new Lancamento("Aluguel", "despesa", 1200));
-    fevereiro.adicionarLancamento(
-      new Lancamento("Conta de Luz", "despesa", 100)
-    );
-    fevereiro.adicionarLancamento(
-      new Lancamento("Conta de Água", "despesa", 100)
-    );
-
-    const marco = new Mes("Marco");
-    marco.adicionarLancamento(new Lancamento("Salário", "receita", 3000));
-    marco.adicionarLancamento(new Lancamento("Hora Extra", "receita", 500));
-    marco.adicionarLancamento(new Lancamento("Aluguel", "despesa", 600));
-
+  async init() {
+    const response = await fetch("http://localhost:3000/api/lancamentos");
+    const lancamentos = await response.json();
     const ano = new Ano();
-    ano.adicionarMes(janeiro);
-    ano.adicionarMes(fevereiro);
-    ano.adicionarMes(marco);
+    ano.adicionarMes(new Mes("janeiro"));
+    ano.adicionarMes(new Mes("fevereiro"));
+    ano.adicionarMes(new Mes("marco"));
+    for (const lancamento of lancamentos) {
+      ano.adicionarLancamento(
+        lancamento.mes,
+        new Lancamento(lancamento.categoria, lancamento.tipo, lancamento.valor)
+      );
+    }
     ano.calcularSaldo();
     this.ano = ano;
+    this.renderizar();
+
+    console.log(lancamentos);
   }
 
   formatarDinheiro(valor) {
@@ -44,6 +39,16 @@ class Tela {
       mes.value,
       new Lancamento(categoria.value, tipo.value, Number(valor.value))
     );
+    fetch("http://localhost:3000/api/lancamentos", {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        mes: mes.value,
+        categoria: categoria.value,
+        tipo: tipo.value,
+        valor: Number(valor.value),
+      }),
+    });
     this.ano.calcularSaldo();
     this.renderizar();
     mes.value = this.ano.meses[0].nome;
@@ -115,7 +120,5 @@ class Tela {
     }
     const [body] = document.getElementsByTagName("body");
     body.appendChild(app.elemento);
-    console.log(body);
-    console.log(this.ano.meses);
   }
 }
