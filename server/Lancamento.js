@@ -1,5 +1,5 @@
 class Lancamento {
-  constructor(categoria, tipo, valor, id) {
+  constructor(mes, categoria, tipo, valor, id) {
     if (tipo !== 'receita' && tipo !== 'despesa') {
       throw new Error(
         'Lançamento Inválido: O lançamento deve ser uma despesa ou uma receita.'
@@ -11,13 +11,11 @@ class Lancamento {
     if (categoria === '') {
       throw new Error('Lançamento Inválido: A categoria é obrigatória.');
     }
+    this.mes = mes;
     this.categoria = categoria;
     this.tipo = tipo;
     this.valor = valor;
     this.id = id;
   }
-
-  getValorString() {
-    return this.tipo === 'despesa' ? this.valor * -1 : this.valor;
-  }
 }
+module.exports = Lancamento;

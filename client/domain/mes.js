@@ -17,10 +17,6 @@ class Mes {
   }
 
   adicionarLancamento(lancamento) {
-    const objetoEstaVazio = Object.keys(lancamento).length === 0;
-    if (typeof lancamento !== 'object' || objetoEstaVazio) {
-      throw Error('Lançamento Inválido.');
-    }
     this.lancamentos.push(lancamento);
   }
 

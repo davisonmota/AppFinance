@@ -12,10 +12,10 @@ class LancamentoController {
 
     httpServer.register(
       'delete',
-      '/api/lancamentos/:idLancamento',
+      '/api/lancamentos/:id',
       async (params, body) => {
-        const idLancamento = params;
-        await lancamentoData.deleteLancamento(idLancamento);
+        const { id } = params;
+        await lancamentoData.deleteLancamento(id);
       }
     );
   }

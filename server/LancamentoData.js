@@ -1,13 +1,27 @@
+const Lancamento = require('./Lancamento.js');
+
 class LancamentoData {
   constructor(connection) {
     this.connection = connection;
   }
 
   async getLancamento() {
-    const lancamentos = await this.connection.query(
+    const lancamentosData = await this.connection.query(
       'select * from financas_pessoais.lancamento',
       []
     );
+    const lancamentos = [];
+    for (const lancamentoData of lancamentosData) {
+      lancamentos.push(
+        new Lancamento(
+          lancamentoData.mes,
+          lancamentoData.categoria,
+          lancamentoData.tipo,
+          parseFloat(lancamentoData.valor),
+          lancamentoData.id_lancamento
+        )
+      );
+    }
     return lancamentos;
   }
 
@@ -18,10 +32,10 @@ class LancamentoData {
     );
   }
 
-  async deleteLancamento(idLancamento) {
+  async deleteLancamento(id) {
     await this.connection.query(
-      'delete from financas_pessoais.lancamento whare id_lancamento = $1',
-      [idLancamento]
+      'delete from financas_pessoais.lancamento where id_lancamento = $1',
+      [id]
     );
   }
 }

@@ -8,7 +8,7 @@ class HttpServer {
   }
 
   register(method, url, callback) {
-    this.app[method](url, async (req, res) => {
+    this.app[method](url, async function (req, res) {
       const output = await callback(req.params, req.body);
       res.json(output);
     });
