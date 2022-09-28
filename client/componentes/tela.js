@@ -4,44 +4,46 @@ class Tela {
   }
 
   async init() {
-    const response = await fetch("http://localhost:3000/api/lancamentos");
+    const response = await fetch('http://localhost:3000/api/lancamentos');
     const lancamentos = await response.json();
     const ano = new Ano();
-    ano.adicionarMes(new Mes("janeiro"));
-    ano.adicionarMes(new Mes("fevereiro"));
-    ano.adicionarMes(new Mes("marco"));
+    ano.adicionarMes(new Mes('janeiro'));
+    ano.adicionarMes(new Mes('fevereiro'));
+    ano.adicionarMes(new Mes('marco'));
     for (const lancamento of lancamentos) {
       ano.adicionarLancamento(
         lancamento.mes,
-        new Lancamento(lancamento.categoria, lancamento.tipo, lancamento.valor)
+        new Lancamento(
+          lancamento.categoria,
+          lancamento.tipo,
+          Number(lancamento.valor)
+        )
       );
     }
     ano.calcularSaldo();
     this.ano = ano;
     this.renderizar();
-
-    console.log(lancamentos);
   }
 
   formatarDinheiro(valor) {
-    return new Intl.NumberFormat("pt-br", {
-      currency: "BRL",
-      style: "currency",
+    return new Intl.NumberFormat('pt-br', {
+      currency: 'BRL',
+      style: 'currency',
     }).format(valor);
   }
 
   adicionarLancamento() {
-    const mes = document.getElementById("mes");
-    const tipo = document.getElementById("tipo");
-    const categoria = document.getElementById("categoria");
-    const valor = document.getElementById("valor");
+    const mes = document.getElementById('mes');
+    const tipo = document.getElementById('tipo');
+    const categoria = document.getElementById('categoria');
+    const valor = document.getElementById('valor');
     this.ano.adicionarLancamento(
       mes.value,
       new Lancamento(categoria.value, tipo.value, Number(valor.value))
     );
-    fetch("http://localhost:3000/api/lancamentos", {
-      method: "post",
-      headers: { "content-type": "application/json" },
+    fetch('http://localhost:3000/api/lancamentos', {
+      method: 'post',
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         mes: mes.value,
         categoria: categoria.value,
@@ -52,29 +54,29 @@ class Tela {
     this.ano.calcularSaldo();
     this.renderizar();
     mes.value = this.ano.meses[0].nome;
-    tipo.value = "receita";
-    categoria.value = "";
-    valor.value = "";
+    tipo.value = 'receita';
+    categoria.value = '';
+    valor.value = '';
   }
 
   renderizar() {
-    document.getElementById("app").remove();
-    const app = new Div("app");
+    document.getElementById('app').remove();
+    const app = new Div('app');
 
-    const formularioLancamento = new Div("formulario-lancamento");
-    const mesSelect = new Select("mes");
+    const formularioLancamento = new Div('formulario-lancamento');
+    const mesSelect = new Select('mes');
     for (const mes of this.ano.meses) {
       mesSelect.adicionarOption(mes.nome);
     }
     formularioLancamento.adicionarElementoFilho(mesSelect.elemento);
-    const tipoSelect = new Select("tipo");
-    tipoSelect.adicionarOption("receita");
-    tipoSelect.adicionarOption("despesa");
-    const categoriaInputText = new Input("text", "Categoria", "categoria");
-    const valorInputNumber = new Input("number", "Valor", "valor");
+    const tipoSelect = new Select('tipo');
+    tipoSelect.adicionarOption('receita');
+    tipoSelect.adicionarOption('despesa');
+    const categoriaInputText = new Input('text', 'Categoria', 'categoria');
+    const valorInputNumber = new Input('number', 'Valor', 'valor');
     const botao = new Button(
-      "botaoAdicionarLancamento",
-      "Adicionar lançamento"
+      'botaoAdicionarLancamento',
+      'Adicionar lançamento'
     );
     formularioLancamento.adicionarElementoFilho(tipoSelect.elemento);
     formularioLancamento.adicionarElementoFilho(categoriaInputText.elemento);
@@ -88,37 +90,37 @@ class Tela {
     for (const mes of this.ano.meses) {
       const nomeDoMes = new H2(mes.nome);
       app.adicionarElementoFilho(nomeDoMes.elemento);
-      const tabelaLancamentos = new Tabela("tabela-lancamentos");
-      tabelaLancamentos.adicionarLinha("th", ["Categoria", "Valor"]);
+      const tabelaLancamentos = new Tabela('tabela-lancamentos');
+      tabelaLancamentos.adicionarLinha('th', ['Categoria', 'Valor']);
       for (const lancamento of mes.lancamentos) {
-        tabelaLancamentos.adicionarLinha("td", [
+        tabelaLancamentos.adicionarLinha('td', [
           lancamento.categoria,
           this.formatarDinheiro(lancamento.getValorString()),
         ]);
       }
-      tabelaLancamentos.adicionarLinha("th", [
-        "Receitas",
+      tabelaLancamentos.adicionarLinha('th', [
+        'Receitas',
         this.formatarDinheiro(mes.totalizador.receitas),
       ]);
-      tabelaLancamentos.adicionarLinha("th", [
-        "Despesas",
+      tabelaLancamentos.adicionarLinha('th', [
+        'Despesas',
         this.formatarDinheiro(mes.totalizador.despesas),
       ]);
-      tabelaLancamentos.adicionarLinha("th", [
-        "Juros",
+      tabelaLancamentos.adicionarLinha('th', [
+        'Juros',
         this.formatarDinheiro(mes.totalizador.juros),
       ]);
-      tabelaLancamentos.adicionarLinha("th", [
-        "Rendimentos",
+      tabelaLancamentos.adicionarLinha('th', [
+        'Rendimentos',
         this.formatarDinheiro(mes.totalizador.rendimentos),
       ]);
-      tabelaLancamentos.adicionarLinha("th", [
-        "Saldo",
+      tabelaLancamentos.adicionarLinha('th', [
+        'Saldo',
         this.formatarDinheiro(mes.totalizador.saldo),
       ]);
       app.adicionarElementoFilho(tabelaLancamentos.elemento);
     }
-    const [body] = document.getElementsByTagName("body");
+    const [body] = document.getElementsByTagName('body');
     body.appendChild(app.elemento);
   }
 }

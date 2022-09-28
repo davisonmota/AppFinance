@@ -1,6 +1,6 @@
 class Mes {
   constructor(nome) {
-    if (nome === "") throw new Error("Mês Inválido: O nome é obrigatório.");
+    if (nome === '') throw new Error('Mês Inválido: O nome é obrigatório.');
     this.nome = nome;
     this.saldoInicial = 0;
     this.lancamentos = [];
@@ -18,8 +18,9 @@ class Mes {
 
   adicionarLancamento(lancamento) {
     const objetoEstaVazio = Object.keys(lancamento).length === 0;
-    if (typeof lancamento !== "object" || objetoEstaVazio)
-      throw Error("Lançamento Inválido.");
+    if (typeof lancamento !== 'object' || objetoEstaVazio) {
+      throw Error('Lançamento Inválido.');
+    }
     this.lancamentos.push(lancamento);
   }
 
@@ -43,15 +44,14 @@ class Mes {
     this.apurarJuros();
     this.apurarRendimentos();
   }
-  
+
   arredondar(valor) {
     return Math.round(valor * 100) / 100;
   }
-  
 
   apurarReceitas() {
     for (const lancamento of this.lancamentos) {
-      if (lancamento.tipo === "receita") {
+      if (lancamento.tipo === 'receita') {
         this.totalizador.saldo += lancamento.valor;
         this.totalizador.receitas += lancamento.valor;
       }
@@ -60,7 +60,7 @@ class Mes {
 
   apurarDespesas() {
     for (const lancamento of this.lancamentos) {
-      if (lancamento.tipo === "despesa") {
+      if (lancamento.tipo === 'despesa') {
         this.totalizador.saldo -= lancamento.valor;
         this.totalizador.despesas += lancamento.valor;
       }
@@ -69,7 +69,7 @@ class Mes {
 
   distribuirDespesas() {
     for (const lancamento of this.lancamentos) {
-      if (lancamento.tipo === "despesa") {
+      if (lancamento.tipo === 'despesa') {
         const percentualDespesa = this.arredondar(
           (lancamento.valor / this.totalizador.despesas) * 100
         );
@@ -83,7 +83,7 @@ class Mes {
 
   distribuirReceitas() {
     for (const lancamento of this.lancamentos) {
-      if (lancamento.tipo === "receita") {
+      if (lancamento.tipo === 'receita') {
         const percentualReceita = this.arredondar(
           (lancamento.valor / this.totalizador.receitas) * 100
         );
@@ -97,7 +97,7 @@ class Mes {
 
   distribuirDespesasPeloTotalDasReceitas() {
     for (const lancamento of this.lancamentos) {
-      if (lancamento.tipo === "despesa") {
+      if (lancamento.tipo === 'despesa') {
         const percentualDespesaPeloTotalDasReceita = this.arredondar(
           (lancamento.valor / this.totalizador.receitas) * 100
         );

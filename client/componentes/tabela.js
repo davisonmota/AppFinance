@@ -1,16 +1,16 @@
 class Tabela {
-  constructor(className) {
-    this.elemento = document.createElement("table");
-    this.elemento.className = className;
+  constructor (className) {
+    this.elemento = document.createElement('table')
+    this.elemento.className = className
   }
 
-  adicionarLinha(tipo, valores) {
-    const tr = document.createElement("tr");
+  adicionarLinha (tipo, valores) {
+    const tr = document.createElement('tr')
     for (const valor of valores) {
-      const coluna = document.createElement(tipo);
-      coluna.innerText = valor;
-      tr.appendChild(coluna);
+      const coluna = document.createElement(tipo)
+      coluna.innerText = valor
+      tr.appendChild(coluna)
     }
-    this.elemento.appendChild(tr);
+    this.elemento.appendChild(tr)
   }
 }
