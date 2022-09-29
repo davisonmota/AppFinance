@@ -1,17 +1,14 @@
 class Tela {
-  constructor() {
+  constructor(lancamentoServece) {
+    this.lancamentoServece = lancamentoServece;
     this.init();
   }
 
   async init() {
-    const response = await fetch('http://localhost:3000/api/lancamentos');
-    const lancamentos = await response.json();
-    const ano = new Ano();
-    ano.adicionarMes(new Mes('janeiro'));
-    ano.adicionarMes(new Mes('fevereiro'));
-    ano.adicionarMes(new Mes('marco'));
+    const lancamentos = await this.lancamentoServece.getLancamento();
+    this.ano = new Ano();
     for (const lancamento of lancamentos) {
-      ano.adicionarLancamento(
+      this.ano.adicionarLancamento(
         lancamento.mes,
         new Lancamento(
           lancamento.categoria,
@@ -21,8 +18,7 @@ class Tela {
         )
       );
     }
-    ano.calcularSaldo();
-    this.ano = ano;
+    this.ano.calcularSaldo();
     this.renderizar();
   }
 
@@ -42,28 +38,20 @@ class Tela {
       mes.value,
       new Lancamento(categoria.value, tipo.value, Number(valor.value))
     );
-    fetch('http://localhost:3000/api/lancamentos', {
-      method: 'post',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        mes: mes.value,
-        categoria: categoria.value,
-        tipo: tipo.value,
-        valor: Number(valor.value),
-      }),
-    });
-    this.ano.calcularSaldo();
+    const lancamento = {
+      mes: mes.value,
+      categoria: categoria.value,
+      tipo: tipo.value,
+      valor: Number(valor.value),
+    };
+    this.lancamentoServece.seveLancamento(lancamento);
     this.renderizar();
-    mes.value = this.ano.meses[0].nome;
-    tipo.value = 'receita';
-    categoria.value = '';
-    valor.value = '';
+    this.init();
   }
 
-  deletarLancamento(id) {
-    fetch(`http://localhost:3000/api/lancamentos/${id}`, {
-      method: 'delete',
-    });
+  deletarLancamento(mes, lancamento) {
+    this.lancamentoServece.deleteLancamento(lancamento.id);
+    this.ano.deletarLancamento(mes, lancamento);
     this.ano.calcularSaldo();
     this.renderizar();
   }
@@ -104,9 +92,7 @@ class Tela {
       for (const lancamento of mes.lancamentos) {
         const button = new Button('delete-lancamento', 'Deletar');
         button.addListener(() => {
-          this.deletarLancamento(lancamento.id);
-          this.ano.deletarLancamento(mes, lancamento);
-          this.renderizar();
+          this.deletarLancamento(mes, lancamento);
         });
         tabelaLancamentos.adicionarLinha(
           'td',

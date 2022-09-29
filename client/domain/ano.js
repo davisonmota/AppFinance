@@ -8,6 +8,10 @@ class Ano {
   }
 
   adicionarLancamento(nomeDoMes, lancameto) {
+    const mesNaoExiste = !this.meses.some((mes) => mes.nome === nomeDoMes);
+    if (mesNaoExiste) {
+      this.adicionarMes(new Mes(nomeDoMes));
+    }
     for (const mes of this.meses) {
       if (mes.nome === nomeDoMes) {
         mes.adicionarLancamento(lancameto);
